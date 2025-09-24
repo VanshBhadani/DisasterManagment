@@ -1,0 +1,26 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Person taking cover -->
+  <defs>
+    <linearGradient id="coverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF5722"/>
+      <stop offset="100%" style="stop-color:#D32F2F"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Table/desk -->
+  <rect x="16" y="36" width="32" height="6" rx="2" fill="#8D6E63"/>
+  <rect x="18" y="42" width="4" height="16" fill="#8D6E63"/>
+  <rect x="42" y="42" width="4" height="16" fill="#8D6E63"/>
+  
+  <!-- Person crouching under table -->
+  <circle cx="32" cy="28" r="6" fill="url(#coverGrad)"/>
+  <path d="M26 44 Q26 34 32 34 Q38 34 38 44 Q38 48 32 48 Q26 48 26 44 Z" fill="url(#coverGrad)"/>
+  
+  <!-- Arms covering head -->
+  <ellipse cx="28" cy="26" rx="4" ry="2" fill="url(#coverGrad)" transform="rotate(-30 28 26)"/>
+  <ellipse cx="36" cy="26" rx="4" ry="2" fill="url(#coverGrad)" transform="rotate(30 36 26)"/>
+  
+  <!-- Safety indicator -->
+  <circle cx="48" cy="16" r="6" fill="#4CAF50"/>
+  <path d="M45 16 L47 18 L51 14" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>

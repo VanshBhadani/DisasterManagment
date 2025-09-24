@@ -1,0 +1,10 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- Score bar chart -->
+  <rect x="4" y="18" width="3" height="4" fill="#FF5722"/>
+  <rect x="8" y="14" width="3" height="8" fill="#FF9800"/>
+  <rect x="12" y="10" width="3" height="12" fill="#4CAF50"/>
+  <rect x="16" y="8" width="3" height="14" fill="#2196F3"/>
+  
+  <!-- Score indicator -->
+  <text x="12" y="6" text-anchor="middle" font-family="Arial" font-size="8" fill="#666">Score</text>
+</svg>

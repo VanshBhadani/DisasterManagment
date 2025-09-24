@@ -1,0 +1,15 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- PDF document -->
+  <rect x="4" y="2" width="14" height="20" rx="2" fill="white" stroke="#f44336" stroke-width="2"/>
+  
+  <!-- PDF text -->
+  <text x="12" y="8" text-anchor="middle" font-family="Arial" font-size="6" font-weight="bold" fill="#f44336">PDF</text>
+  
+  <!-- Document lines -->
+  <rect x="6" y="12" width="8" height="1" fill="#E0E0E0"/>
+  <rect x="6" y="15" width="10" height="1" fill="#E0E0E0"/>
+  <rect x="6" y="18" width="6" height="1" fill="#E0E0E0"/>
+  
+  <!-- Corner fold -->
+  <path d="M14 2 L18 6 L14 6 Z" fill="#f44336"/>
+</svg>

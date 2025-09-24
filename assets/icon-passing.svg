@@ -1,0 +1,10 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- Passing grade indicator -->
+  <circle cx="12" cy="12" r="10" fill="none" stroke="#4CAF50" stroke-width="2"/>
+  
+  <!-- Checkmark -->
+  <path d="M8 12 L11 15 L16 9" stroke="#4CAF50" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Percentage -->
+  <text x="12" y="6" text-anchor="middle" font-family="Arial" font-size="6" font-weight="bold" fill="#4CAF50">PASS</text>
+</svg>

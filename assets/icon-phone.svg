@@ -1,0 +1,14 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- Phone body -->
+  <rect x="7" y="2" width="10" height="20" rx="3" fill="#333" stroke="#666" stroke-width="1"/>
+  <rect x="8" y="4" width="8" height="14" rx="1" fill="#4CAF50"/>
+  
+  <!-- Screen content (emergency number) -->
+  <text x="12" y="14" text-anchor="middle" font-family="Arial" font-size="8" fill="white">911</text>
+  
+  <!-- Speaker -->
+  <rect x="10" y="3" width="4" height="1" rx="0.5" fill="#666"/>
+  
+  <!-- Home button -->
+  <circle cx="12" cy="19" r="1.5" fill="#666"/>
+</svg>

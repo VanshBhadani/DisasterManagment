@@ -1,0 +1,7 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- Reset circular arrow -->
+  <path d="M4 12 A8 8 0 1 1 12 4 L12 8 L8 4 L12 4" fill="none" stroke="#f44336" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Arrow head -->
+  <path d="M4 12 L7 9 M4 12 L7 15" stroke="#f44336" stroke-width="2" stroke-linecap="round"/>
+</svg>
