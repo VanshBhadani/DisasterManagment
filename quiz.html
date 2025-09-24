@@ -79,7 +79,7 @@
                         </span>
                     </div>
                     
-                    <div class="quiz-progress">
+                    <div class="quiz-progress" id="headerProgress">
                         <div class="progress-bar">
                             <div class="progress-bar__fill" id="quizProgress" style="width: 0%"></div>
                         </div>
@@ -98,35 +98,46 @@
         <section class="quiz-content">
             <div class="container">
                 <!-- Pre-Quiz Instructions -->
-                <div class="quiz-instructions" id="quizInstructions">
+                <div class="quiz-instructions" id="quizStart">
                     <div class="instructions-card">
                         <h2 data-i18n="quiz.instructions.title">Before You Begin</h2>
                         
-                        <div class="student-info">
+                        <form class="student-info" id="studentInfoForm">
                             <h3 data-i18n="quiz.student.info">Student Information</h3>
                             <div class="form-group">
                                 <label for="studentName" data-i18n="quiz.student.name">Full Name:</label>
                                 <input type="text" id="studentName" placeholder="Enter your full name" required>
+                                <div class="field-error" id="studentNameError"></div>
                             </div>
                             <div class="form-group">
                                 <label for="studentId" data-i18n="quiz.student.id">Student ID (Optional):</label>
                                 <input type="text" id="studentId" placeholder="Enter your student ID">
                             </div>
-                        </div>
+                            <div class="form-group">
+                                <label for="institution">Institution (Optional):</label>
+                                <input type="text" id="institution" placeholder="Your school/organization">
+                            </div>
+                            <div class="form-group">
+                                <label for="course">Course (Optional):</label>
+                                <input type="text" id="course" placeholder="Course name">
+                            </div>
+                        </form>
                         
                         <div class="instructions-list">
                             <h3 data-i18n="quiz.instructions.heading">Instructions:</h3>
                             <ul>
                                 <li data-i18n="quiz.instructions.1">Read each question carefully before selecting your answer</li>
                                 <li data-i18n="quiz.instructions.2">You can review and change answers before submitting</li>
-                                <li data-i18n="quiz.instructions.3">A score of 66% or higher is required to pass</li>
+                                <li data-i18n="quiz.instructions.3">A score of 70% or higher is required to pass</li>
                                 <li data-i18n="quiz.instructions.4">You will receive a certificate upon successful completion</li>
+                                <li>⏱️ Time limit: <strong>5 minutes</strong></li>
+                                <li>📊 Total questions: <strong>3</strong></li>
                             </ul>
                         </div>
                         
                         <div class="instructions-actions">
-                            <button class="btn btn--primary btn--large" id="startQuiz" data-i18n="quiz.start">
-                                Start Quiz
+                            <button type="button" class="btn btn--primary btn--large" id="startQuiz" data-i18n="quiz.start">
+                                🚀 Start Quiz
                             </button>
                         </div>
                     </div>
@@ -134,19 +145,38 @@
                 
                 <!-- Quiz Questions -->
                 <div class="quiz-questions" id="quizQuestions" hidden>
-                    <div class="question-card" id="questionCard">
-                        <!-- Question content will be populated dynamically -->
+                    <!-- Timer and Progress -->
+                    <div class="quiz-header-info">
+                        <div class="question-progress">
+                            <span id="questionCounter">Question 1 of 3</span>
+                        </div>
+                        <div class="time-remaining">
+                            <span data-i18n="quiz.time.remaining">Time remaining:</span>
+                            <span id="timeRemaining">5:00</span>
+                        </div>
                     </div>
                     
-                    <div class="quiz-navigation">
-                        <button class="btn btn--secondary" id="previousQuestion" data-i18n="quiz.nav.previous" disabled>
-                            Previous
+                    <div class="question-card" id="questionCard">
+                        <div class="question-content">
+                            <h3 id="questionText" class="question-title">Question text will appear here</h3>
+                            <div id="questionImage" class="question-image" style="display: none;">
+                                <img src="" alt="Question illustration">
+                            </div>
+                            <div id="answersContainer" class="answers-container">
+                                <!-- Answers will be populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-navigation btn-group">
+                        <button class="btn btn--secondary btn--medium" id="prevQuestion" data-i18n="quiz.nav.previous" disabled>
+                            ← Previous
                         </button>
-                        <button class="btn btn--primary" id="nextQuestion" data-i18n="quiz.nav.next">
-                            Next Question
+                        <button class="btn btn--primary btn--medium" id="nextQuestion" data-i18n="quiz.nav.next">
+                            Next Question →
                         </button>
-                        <button class="btn btn--success" id="submitQuiz" data-i18n="quiz.submit" hidden>
-                            Submit Quiz
+                        <button class="btn btn--success btn--large" id="submitQuiz" data-i18n="quiz.submit" hidden>
+                            ✅ Submit Quiz
                         </button>
                     </div>
                 </div>
@@ -164,28 +194,31 @@
                                     <span class="score-number" id="finalScore">85</span>
                                     <span class="score-percent">%</span>
                                 </div>
-                                <p class="score-description" id="scoreDescription" data-i18n="quiz.results.passed">
+                                <p class="score-description" id="passingStatus" data-i18n="quiz.results.passed">
                                     Congratulations! You passed the assessment.
                                 </p>
                             </div>
                         </div>
                         
-                        <div class="results-details">
+                        <div class="results-details" id="scoreDetails">
                             <h3 data-i18n="quiz.results.breakdown">Answer Breakdown</h3>
                             <div class="answer-review" id="answerReview">
                                 <!-- Individual question results will be populated here -->
                             </div>
                         </div>
                         
-                        <div class="results-actions">
-                            <button class="btn btn--secondary" id="reviewAnswers" data-i18n="quiz.results.review">
-                                Review Answers
+                        <div class="results-actions btn-group">
+                            <button class="btn btn--secondary btn--medium" id="reviewAnswers" data-i18n="quiz.results.review">
+                                📝 Review Answers
                             </button>
-                            <button class="btn btn--primary" id="generateCertificate" data-i18n="quiz.results.certificate" disabled>
-                                Generate Certificate
+                            <button class="btn btn--primary btn--medium" id="downloadCertificate" data-i18n="quiz.results.certificate">
+                                📥 Download Certificate
                             </button>
-                            <button class="btn btn--outline" id="retakeQuiz" data-i18n="quiz.results.retake">
-                                Retake Quiz
+                            <button class="btn btn--accent btn--medium" id="viewCertificate" data-i18n="quiz.results.view">
+                                👁️ View Certificate
+                            </button>
+                            <button class="btn btn--outline btn--medium" id="retryQuiz" data-i18n="quiz.results.retake">
+                                🔄 Retake Quiz
                             </button>
                         </div>
                     </div>
@@ -266,6 +299,26 @@
                     />
                     <text x="18" y="20.35" class="timer-text" id="timerText">5:00</text>
                 </svg>
+            </div>
+        </div>
+
+        <!-- Certificate Preview Modal -->
+        <div class="modal" id="certificateModal" style="display: none;">
+            <div class="modal-overlay" id="closeCertificateModal"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Certificate Preview</h3>
+                    <button class="modal-close" id="closeCertificateModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="certificatePreview">
+                        <!-- Certificate content will be shown here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn--secondary" id="closeCertificateModal">Close</button>
+                    <button class="btn btn--primary" id="downloadFromPreview">Download PDF</button>
+                </div>
             </div>
         </div>
     </main>

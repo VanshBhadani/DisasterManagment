@@ -99,6 +99,56 @@ class Dashboard {
         this.filterStudents(searchInput.value);
       }, 300));
     }
+    
+    // Modal event listeners
+    this.setupModalEventListeners();
+  }
+  
+  /**
+   * Setup modal event listeners
+   */
+  setupModalEventListeners() {
+    // Modal close buttons
+    const modalClose = document.getElementById('modalClose');
+    const modalCancel = document.getElementById('modalCancel');
+    const modalOverlay = document.getElementById('modalOverlay');
+    
+    if (modalClose) {
+      modalClose.addEventListener('click', () => {
+        this.closeModal();
+      });
+    }
+    
+    if (modalCancel) {
+      modalCancel.addEventListener('click', () => {
+        this.closeModal();
+      });
+    }
+    
+    if (modalOverlay) {
+      modalOverlay.addEventListener('click', () => {
+        this.closeModal();
+      });
+    }
+    
+    // Send certificate button
+    const sendCertificateBtn = document.getElementById('sendCertificate');
+    if (sendCertificateBtn) {
+      sendCertificateBtn.addEventListener('click', () => {
+        this.sendCertificate();
+      });
+    }
+    
+    // Student table row clicks
+    document.addEventListener('click', (e) => {
+      const studentRow = e.target.closest('.student-row');
+      if (studentRow) {
+        const studentId = studentRow.getAttribute('data-student-id');
+        if (studentId) {
+          this.showStudentDetails(studentId);
+        }
+      }
+    });
   }
   
   /**
@@ -739,8 +789,8 @@ class Dashboard {
     
     console.log('👤 Viewing student:', student);
     
-    // This would typically open a modal or navigate to a detail page
-    alert(`Student Details:\n\nName: ${student.name}\nID: ${student.id}\nInstitution: ${student.institution}\nCourse: ${student.course}\nCompleted Modules: ${student.completedModules}\nAverage Score: ${student.averageScore}%\nStatus: ${student.status}`);
+    // Open the student details modal
+    this.showStudentDetails(student);
   }
   
   /**
@@ -854,6 +904,138 @@ class Dashboard {
         chart.resize();
       }
     });
+  }
+  
+  /**
+   * Show student details modal
+   */
+  showStudentDetails(student) {
+    // Accept either student object or studentId
+    if (typeof student === 'string') {
+      student = this.data.students.find(s => s.id === student);
+    }
+    
+    if (!student) {
+      console.error('Student not found');
+      return;
+    }
+    
+    // Populate modal with student data
+    const modalBody = document.getElementById('modalBody');
+    if (modalBody) {
+      modalBody.innerHTML = `
+        <div class="student-details">
+          <div class="detail-group">
+            <label>👤 Name:</label>
+            <span>${student.name}</span>
+          </div>
+          <div class="detail-group">
+            <label>🆔 Student ID:</label>
+            <span>${student.id}</span>
+          </div>
+          <div class="detail-group">
+            <label>🏫 Institution:</label>
+            <span>${student.institution}</span>
+          </div>
+          <div class="detail-group">
+            <label>📚 Course:</label>
+            <span>${student.course}</span>
+          </div>
+          <div class="detail-group">
+            <label>📅 Joined:</label>
+            <span>${new Date(student.joinedAt).toLocaleDateString()}</span>
+          </div>
+          <div class="detail-group">
+            <label>✅ Completed Modules:</label>
+            <span>${student.completedModules || 0}</span>
+          </div>
+          <div class="detail-group">
+            <label>📊 Average Score:</label>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: ${student.averageScore || 0}%"></div>
+            </div>
+            <span>${student.averageScore || 0}%</span>
+          </div>
+          <div class="detail-group">
+            <label>📱 Last Activity:</label>
+            <span>${student.lastActive ? new Date(student.lastActive).toLocaleDateString() : 'Never'}</span>
+          </div>
+          <div class="detail-group">
+            <label>🔄 Status:</label>
+            <span class="status ${(student.status || 'inactive').toLowerCase()}">${student.status || 'Inactive'}</span>
+          </div>
+        </div>
+      `;
+    }
+    
+    // Store current student for certificate sending
+    this.currentStudent = student;
+    
+    // Show modal
+    const modal = document.getElementById('studentModal');
+    if (modal) {
+      modal.hidden = false;
+      modal.style.display = 'flex';
+    }
+  }
+  
+  /**
+   * Close student details modal
+   */
+  closeModal() {
+    const modal = document.getElementById('studentModal');
+    if (modal) {
+      modal.hidden = true;
+      modal.style.display = 'none';
+    }
+    this.currentStudent = null;
+  }
+  
+  /**
+   * Send certificate to student
+   */
+  async sendCertificate() {
+    if (!this.currentStudent) {
+      alert('No student selected');
+      return;
+    }
+    
+    try {
+      // Show loading state
+      const sendBtn = document.getElementById('sendCertificate');
+      if (sendBtn) {
+        const originalText = sendBtn.textContent;
+        sendBtn.disabled = true;
+        sendBtn.textContent = 'Sending...';
+        
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // In real implementation, this would call an API
+        console.log('Sending certificate to:', this.currentStudent.email);
+        
+        // Show success message
+        alert(`Certificate sent successfully to ${this.currentStudent.name}!`);
+        
+        // Reset button state
+        sendBtn.disabled = false;
+        sendBtn.textContent = originalText;
+        
+        // Close modal
+        this.closeModal();
+        
+      }
+    } catch (error) {
+      console.error('Error sending certificate:', error);
+      alert('Failed to send certificate. Please try again.');
+      
+      // Reset button state
+      const sendBtn = document.getElementById('sendCertificate');
+      if (sendBtn) {
+        sendBtn.disabled = false;
+        sendBtn.textContent = 'Send Certificate';
+      }
+    }
   }
 }
 

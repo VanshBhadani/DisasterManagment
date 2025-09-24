@@ -161,6 +161,7 @@ function init() {
   // Initialize all components
   initNavigation();
   initLanguageToggle();
+  initButtons();
   initSmoothScrolling();
   initLazyLoading();
   initAccessibility();
@@ -277,6 +278,91 @@ function updateLanguageToggle() {
   if (langToggleText) {
     langToggleText.textContent = SurakshaLearn.currentLang.toUpperCase();
   }
+}
+
+/**
+ * Initialize button functionality
+ */
+function initButtons() {
+  // Watch Demo button
+  const watchDemoBtn = document.getElementById('watchDemo');
+  if (watchDemoBtn) {
+    watchDemoBtn.addEventListener('click', () => {
+      showDemoModal();
+    });
+  }
+  
+  // Add more button handlers here as needed
+}
+
+/**
+ * Show demo video modal
+ */
+function showDemoModal() {
+  // Create modal HTML
+  const modalHTML = `
+    <div class="modal demo-modal" id="demoModal" style="display: flex;">
+      <div class="modal-overlay" onclick="closeDemoModal()"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>🎥 Platform Demo</h3>
+          <button class="modal-close" onclick="closeDemoModal()" aria-label="Close demo">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="video-container">
+            <video 
+              controls 
+              autoplay 
+              poster="assets/demo-poster.jpg"
+              style="width: 100%; max-width: 800px; height: auto; border-radius: 0.5rem;">
+              <source src="assets/suraksha-learn-demo.mp4" type="video/mp4">
+              <source src="assets/suraksha-learn-demo.webm" type="video/webm">
+              <p>Your browser doesn't support video playback. 
+                <a href="assets/suraksha-learn-demo.mp4">Download the demo video</a>
+              </p>
+            </video>
+          </div>
+          <div class="demo-description">
+            <h4>🌟 See Suraksha Learn in Action</h4>
+            <p>Watch how our interactive platform helps students learn essential disaster preparedness skills through:</p>
+            <ul>
+              <li>🎯 Interactive simulations</li>
+              <li>📚 Comprehensive lessons</li>
+              <li>🏆 Assessment quizzes</li>
+              <li>📊 Progress tracking</li>
+            </ul>
+          </div>
+        </div>
+        <div class="modal-footer btn-group">
+          <button class="btn btn--secondary btn--medium" onclick="closeDemoModal()">
+            ❌ Close
+          </button>
+          <a href="lesson.html" class="btn btn--primary btn--medium">
+            🚀 Start Learning Now
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  // Add modal to document
+  document.body.insertAdjacentHTML('beforeend', modalHTML);
+  
+  // Prevent body scroll
+  document.body.style.overflow = 'hidden';
+}
+
+/**
+ * Close demo modal
+ */
+function closeDemoModal() {
+  const modal = document.getElementById('demoModal');
+  if (modal) {
+    modal.remove();
+  }
+  
+  // Restore body scroll
+  document.body.style.overflow = '';
 }
 
 /**

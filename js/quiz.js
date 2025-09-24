@@ -3,6 +3,22 @@
  * Handles quizzes with PDF certificate generation
  */
 
+// Utility function for screen reader announcements
+function announceToScreenReader(message) {
+  const announcement = document.createElement('div');
+  announcement.setAttribute('aria-live', 'polite');
+  announcement.setAttribute('aria-atomic', 'true');
+  announcement.classList.add('sr-only');
+  announcement.textContent = message;
+  
+  document.body.appendChild(announcement);
+  
+  // Remove after announcement
+  setTimeout(() => {
+    document.body.removeChild(announcement);
+  }, 1000);
+}
+
 class DisasterQuiz {
   constructor() {
     this.currentModule = this.getModuleFromURL() || 'earthquake';
@@ -87,7 +103,15 @@ class DisasterQuiz {
         this.previousQuestion();
       });
     }
-    
+
+    // Submit quiz button
+    const submitBtn = document.getElementById('submitQuiz');
+    if (submitBtn) {
+      submitBtn.addEventListener('click', () => {
+        this.submitQuiz();
+      });
+    }
+
     // Results actions
     const retryBtn = document.getElementById('retryQuiz');
     const certificateBtn = document.getElementById('downloadCertificate');
@@ -454,17 +478,21 @@ class DisasterQuiz {
     if (this.startScreen) {
       this.startScreen.hidden = true;
     }
-    
+
     if (this.quizScreen) {
       this.quizScreen.hidden = false;
     }
-    
+
     if (this.resultsScreen) {
       this.resultsScreen.hidden = true;
     }
-  }
-  
-  /**
+    
+    // Hide header progress to avoid confusion
+    const headerProgress = document.getElementById('headerProgress');
+    if (headerProgress) {
+      headerProgress.style.display = 'none';
+    }
+  }  /**
    * Start quiz timer
    */
   startTimer() {
@@ -659,13 +687,47 @@ class DisasterQuiz {
     if (this.prevBtn) {
       this.prevBtn.disabled = this.currentQuestion === 0;
     }
+
+    const submitBtn = document.getElementById('submitQuiz');
     
     if (this.nextBtn) {
       if (this.currentQuestion === this.quizData.questions.length - 1) {
-        this.nextBtn.textContent = 'Finish Quiz';
+        // On last question, hide next button and show submit button
+        this.nextBtn.hidden = true;
+        if (submitBtn) {
+          submitBtn.hidden = false;
+        }
       } else {
+        // On other questions, show next button and hide submit button
+        this.nextBtn.hidden = false;
         this.nextBtn.textContent = 'Next Question';
+        if (submitBtn) {
+          submitBtn.hidden = true;
+        }
       }
+    }
+  }  /**
+   * Submit quiz (called by submit button)
+   */
+  submitQuiz() {
+    // Check if all questions have been answered
+    const unansweredQuestions = [];
+    for (let i = 0; i < this.quizData.questions.length; i++) {
+      if (this.answers[i] === undefined || this.answers[i] === null) {
+        unansweredQuestions.push(i + 1);
+      }
+    }
+    
+    if (unansweredQuestions.length > 0) {
+      const message = `Please answer all questions before submitting. Unanswered questions: ${unansweredQuestions.join(', ')}`;
+      alert(message);
+      announceToScreenReader(message);
+      return;
+    }
+    
+    // Confirm submission
+    if (confirm('Are you sure you want to submit your quiz? You cannot change your answers after submission.')) {
+      this.completeQuiz();
     }
   }
   

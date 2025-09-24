@@ -212,6 +212,22 @@ class LessonPlayer {
         this.downloadMaterials();
       });
     }
+    
+    // Navigation buttons
+    const nextActionBtn = document.getElementById('nextAction');
+    const previousLessonBtn = document.getElementById('previousLesson');
+    
+    if (nextActionBtn) {
+      nextActionBtn.addEventListener('click', () => {
+        this.goToNextAction();
+      });
+    }
+    
+    if (previousLessonBtn) {
+      previousLessonBtn.addEventListener('click', () => {
+        this.goToPreviousLesson();
+      });
+    }
   }
   
   /**
@@ -1014,6 +1030,44 @@ class LessonPlayer {
       }
     } catch (error) {
       console.warn('Failed to load progress:', error);
+    }
+  }
+  
+  /**
+   * Navigate to next action (simulation)
+   */
+  goToNextAction() {
+    // Determine next action based on current module
+    const nextActions = {
+      earthquake: 'simulate.html?module=earthquake',
+      fire: 'simulate.html?module=fire',
+      flood: 'simulate.html?module=flood',
+      default: 'simulate.html'
+    };
+    
+    const nextUrl = nextActions[this.currentModule] || nextActions.default;
+    
+    // Save current progress before navigating
+    this.saveProgress();
+    
+    // Navigate to simulation
+    window.location.href = nextUrl;
+  }
+  
+  /**
+   * Navigate to previous lesson
+   */
+  goToPreviousLesson() {
+    // Determine previous lesson based on current module
+    const lessonOrder = ['earthquake', 'fire', 'flood'];
+    const currentIndex = lessonOrder.indexOf(this.currentModule);
+    
+    if (currentIndex > 0) {
+      const previousModule = lessonOrder[currentIndex - 1];
+      window.location.href = `lesson.html?module=${previousModule}`;
+    } else {
+      // Go back to home page if this is the first lesson
+      window.location.href = 'index.html';
     }
   }
 }
