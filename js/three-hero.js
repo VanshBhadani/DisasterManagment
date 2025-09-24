@@ -234,8 +234,10 @@ class HeroScene {
    * Create student desks
    */
   createDesks(parent) {
-    const deskGeometry = new THREE.BoxGeometry(1.2, 0.1, 0.8);
-    const deskMaterial = new THREE.MeshLambertMaterial({ color: 0x8b4513 });
+    // Materials for realistic school furniture
+    const deskTopMaterial = new THREE.MeshLambertMaterial({ color: 0xd2b48c }); // Light wood
+    const deskFrameMaterial = new THREE.MeshLambertMaterial({ color: 0x8b4513 }); // Dark wood frame
+    const metalMaterial = new THREE.MeshLambertMaterial({ color: 0x708090 }); // Metal legs
     
     const positions = [
       [-2, 0, -1], [0, 0, -1], [2, 0, -1],
@@ -243,19 +245,95 @@ class HeroScene {
     ];
     
     positions.forEach(pos => {
-      const desk = new THREE.Mesh(deskGeometry, deskMaterial);
-      desk.position.set(pos[0], pos[1], pos[2]);
-      desk.castShadow = true;
-      desk.receiveShadow = true;
-      parent.add(desk);
+      const deskGroup = new THREE.Group();
       
-      // Add chair
-      const chairGeometry = new THREE.BoxGeometry(0.4, 0.6, 0.4);
-      const chairMaterial = new THREE.MeshLambertMaterial({ color: 0x654321 });
-      const chair = new THREE.Mesh(chairGeometry, chairMaterial);
-      chair.position.set(pos[0], 0.3, pos[2] + 0.8);
-      chair.castShadow = true;
-      parent.add(chair);
+      // Desktop surface - thinner and more realistic
+      const desktop = new THREE.Mesh(
+        new THREE.BoxGeometry(1.0, 0.04, 0.6), 
+        deskTopMaterial
+      );
+      desktop.position.set(0, 0.4, 0);
+      desktop.castShadow = true;
+      desktop.receiveShadow = true;
+      deskGroup.add(desktop);
+      
+      // Desk frame/edge
+      const frame = new THREE.Mesh(
+        new THREE.BoxGeometry(1.02, 0.06, 0.62), 
+        deskFrameMaterial
+      );
+      frame.position.set(0, 0.37, 0);
+      frame.castShadow = true;
+      deskGroup.add(frame);
+      
+      // Metal desk legs (4 legs)
+      const legGeometry = new THREE.CylinderGeometry(0.02, 0.02, 0.7, 8);
+      const legPositions = [
+        [-0.45, 0, -0.25], [0.45, 0, -0.25],
+        [-0.45, 0, 0.25], [0.45, 0, 0.25]
+      ];
+      
+      legPositions.forEach(legPos => {
+        const leg = new THREE.Mesh(legGeometry, metalMaterial);
+        leg.position.set(legPos[0], legPos[1], legPos[2]);
+        leg.castShadow = true;
+        deskGroup.add(leg);
+      });
+      
+      // Under-desk storage/shelf
+      const shelf = new THREE.Mesh(
+        new THREE.BoxGeometry(0.9, 0.02, 0.5), 
+        deskFrameMaterial
+      );
+      shelf.position.set(0, 0.15, 0);
+      shelf.castShadow = true;
+      deskGroup.add(shelf);
+      
+      deskGroup.position.set(pos[0], pos[1], pos[2]);
+      parent.add(deskGroup);
+      
+      // Realistic school chair/bench
+      const benchGroup = new THREE.Group();
+      
+      // Bench seat
+      const seat = new THREE.Mesh(
+        new THREE.BoxGeometry(0.9, 0.04, 0.35), 
+        deskTopMaterial
+      );
+      seat.position.set(0, 0.2, 0);
+      seat.castShadow = true;
+      seat.receiveShadow = true;
+      benchGroup.add(seat);
+      
+      // Bench backrest
+      const backrest = new THREE.Mesh(
+        new THREE.BoxGeometry(0.9, 0.25, 0.04), 
+        deskFrameMaterial
+      );
+      backrest.position.set(0, 0.32, -0.15);
+      backrest.castShadow = true;
+      benchGroup.add(backrest);
+      
+      // Bench legs (2 side panels)
+      const legPanel1 = new THREE.Mesh(
+        new THREE.BoxGeometry(0.04, 0.4, 0.35), 
+        metalMaterial
+      );
+      legPanel1.position.set(-0.4, 0, 0);
+      legPanel1.castShadow = true;
+      benchGroup.add(legPanel1);
+      
+      const legPanel2 = new THREE.Mesh(
+        new THREE.BoxGeometry(0.04, 0.4, 0.35), 
+        metalMaterial
+      );
+      legPanel2.position.set(0.4, 0, 0);
+      legPanel2.castShadow = true;
+      benchGroup.add(legPanel2);
+      
+      // Position bench behind desk
+      benchGroup.position.set(pos[0], pos[1], pos[2] + 0.7);
+      parent.add(benchGroup);
     });
   }
   
