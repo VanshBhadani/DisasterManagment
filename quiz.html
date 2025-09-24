@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="quiz.title">Quiz - Suraksha Learn</title>
+    <meta name="description" content="Test your disaster preparedness knowledge and earn a certificate">
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    
+    <!-- Libraries for certificate generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+    <a href="#main" class="skip-link" data-i18n="nav.skip">Skip to main content</a>
+    
+    <!-- Navigation -->
+    <nav class="nav" role="navigation">
+        <div class="nav__container">
+            <div class="nav__brand">
+                <img src="assets/logo.svg" alt="Suraksha Learn" class="nav__logo">
+                <span class="nav__title" data-i18n="site.name">Suraksha Learn</span>
+            </div>
+            
+            <div class="nav__menu">
+                <a href="index.html" class="nav__link" data-i18n="nav.home">Home</a>
+                <a href="lesson.html" class="nav__link" data-i18n="nav.lessons">Lessons</a>
+                <a href="simulate.html" class="nav__link" data-i18n="nav.simulate">Simulate</a>
+                <a href="quiz.html" class="nav__link nav__link--active" data-i18n="nav.quiz">Quiz</a>
+                <a href="dashboard.html" class="nav__link" data-i18n="nav.dashboard">Dashboard</a>
+            </div>
+            
+            <div class="nav__actions">
+                <button class="lang-toggle" aria-label="Language toggle">
+                    <span class="lang-toggle__text">EN</span>
+                    <span class="lang-toggle__icon">🌐</span>
+                </button>
+                
+                <button class="nav__mobile-toggle" aria-label="Toggle navigation menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <main id="main" class="main">
+        <!-- Quiz Header -->
+        <section class="quiz-header">
+            <div class="container">
+                <div class="quiz-header__breadcrumb">
+                    <a href="index.html" data-i18n="nav.home">Home</a>
+                    <span>/</span>
+                    <span data-i18n="nav.quiz">Quiz</span>
+                    <span>/</span>
+                    <span class="quiz-header__current" id="currentQuiz">Earthquake Safety</span>
+                </div>
+                
+                <h1 class="quiz-header__title" data-i18n="quiz.earthquake.title">
+                    Earthquake Safety Assessment
+                </h1>
+                
+                <div class="quiz-info">
+                    <div class="quiz-meta">
+                        <span class="quiz-meta__item">
+                            <img src="assets/icon-questions.svg" alt="">
+                            <span data-i18n="quiz.questions.count">3 Questions</span>
+                        </span>
+                        <span class="quiz-meta__item">
+                            <img src="assets/icon-clock.svg" alt="">
+                            <span data-i18n="quiz.time.limit">5 minutes</span>
+                        </span>
+                        <span class="quiz-meta__item">
+                            <img src="assets/icon-passing.svg" alt="">
+                            <span data-i18n="quiz.passing.score">66% to pass</span>
+                        </span>
+                    </div>
+                    
+                    <div class="quiz-progress">
+                        <div class="progress-bar">
+                            <div class="progress-bar__fill" id="quizProgress" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text">
+                            <span data-i18n="quiz.question">Question</span>
+                            <span id="currentQuestion">0</span>
+                            <span data-i18n="simulation.of">of</span>
+                            <span id="totalQuestions">3</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Quiz Content -->
+        <section class="quiz-content">
+            <div class="container">
+                <!-- Pre-Quiz Instructions -->
+                <div class="quiz-instructions" id="quizInstructions">
+                    <div class="instructions-card">
+                        <h2 data-i18n="quiz.instructions.title">Before You Begin</h2>
+                        
+                        <div class="student-info">
+                            <h3 data-i18n="quiz.student.info">Student Information</h3>
+                            <div class="form-group">
+                                <label for="studentName" data-i18n="quiz.student.name">Full Name:</label>
+                                <input type="text" id="studentName" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="studentId" data-i18n="quiz.student.id">Student ID (Optional):</label>
+                                <input type="text" id="studentId" placeholder="Enter your student ID">
+                            </div>
+                        </div>
+                        
+                        <div class="instructions-list">
+                            <h3 data-i18n="quiz.instructions.heading">Instructions:</h3>
+                            <ul>
+                                <li data-i18n="quiz.instructions.1">Read each question carefully before selecting your answer</li>
+                                <li data-i18n="quiz.instructions.2">You can review and change answers before submitting</li>
+                                <li data-i18n="quiz.instructions.3">A score of 66% or higher is required to pass</li>
+                                <li data-i18n="quiz.instructions.4">You will receive a certificate upon successful completion</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="instructions-actions">
+                            <button class="btn btn--primary btn--large" id="startQuiz" data-i18n="quiz.start">
+                                Start Quiz
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quiz Questions -->
+                <div class="quiz-questions" id="quizQuestions" hidden>
+                    <div class="question-card" id="questionCard">
+                        <!-- Question content will be populated dynamically -->
+                    </div>
+                    
+                    <div class="quiz-navigation">
+                        <button class="btn btn--secondary" id="previousQuestion" data-i18n="quiz.nav.previous" disabled>
+                            Previous
+                        </button>
+                        <button class="btn btn--primary" id="nextQuestion" data-i18n="quiz.nav.next">
+                            Next Question
+                        </button>
+                        <button class="btn btn--success" id="submitQuiz" data-i18n="quiz.submit" hidden>
+                            Submit Quiz
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Quiz Results -->
+                <div class="quiz-results" id="quizResults" hidden>
+                    <div class="results-card">
+                        <div class="results-header">
+                            <div class="results-icon" id="resultsIcon">
+                                <!-- Success or failure icon -->
+                            </div>
+                            <h2 class="results-title" id="resultsTitle" data-i18n="quiz.results.title">Quiz Complete!</h2>
+                            <div class="results-score">
+                                <div class="score-display">
+                                    <span class="score-number" id="finalScore">85</span>
+                                    <span class="score-percent">%</span>
+                                </div>
+                                <p class="score-description" id="scoreDescription" data-i18n="quiz.results.passed">
+                                    Congratulations! You passed the assessment.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="results-details">
+                            <h3 data-i18n="quiz.results.breakdown">Answer Breakdown</h3>
+                            <div class="answer-review" id="answerReview">
+                                <!-- Individual question results will be populated here -->
+                            </div>
+                        </div>
+                        
+                        <div class="results-actions">
+                            <button class="btn btn--secondary" id="reviewAnswers" data-i18n="quiz.results.review">
+                                Review Answers
+                            </button>
+                            <button class="btn btn--primary" id="generateCertificate" data-i18n="quiz.results.certificate" disabled>
+                                Generate Certificate
+                            </button>
+                            <button class="btn btn--outline" id="retakeQuiz" data-i18n="quiz.results.retake">
+                                Retake Quiz
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Certificate Template (Hidden) -->
+        <div class="certificate-template" id="certificateTemplate" style="display: none;">
+            <div class="certificate">
+                <div class="certificate__border">
+                    <div class="certificate__content">
+                        <div class="certificate__header">
+                            <img src="assets/logo-large.png" alt="Suraksha Learn" class="certificate__logo">
+                            <h1 class="certificate__title" data-i18n="certificate.title">Certificate of Completion</h1>
+                        </div>
+                        
+                        <div class="certificate__body">
+                            <p class="certificate__text" data-i18n="certificate.text.1">This certifies that</p>
+                            <h2 class="certificate__name" id="certificateName">Student Name</h2>
+                            <p class="certificate__text" data-i18n="certificate.text.2">has successfully completed</p>
+                            <h3 class="certificate__course" id="certificateCourse">Earthquake Safety Training</h3>
+                            <p class="certificate__text">
+                                <span data-i18n="certificate.text.3">with a score of</span>
+                                <strong id="certificateScore">85%</strong>
+                                <span data-i18n="certificate.text.4">on</span>
+                                <strong id="certificateDate">September 24, 2025</strong>
+                            </p>
+                        </div>
+                        
+                        <div class="certificate__footer">
+                            <div class="certificate__signatures">
+                                <div class="signature">
+                                    <img src="assets/signature-director.png" alt="Director Signature" class="signature__image">
+                                    <div class="signature__line"></div>
+                                    <p class="signature__title" data-i18n="certificate.director">Program Director</p>
+                                    <p class="signature__name">Dr. Sarah Johnson</p>
+                                </div>
+                                
+                                <div class="certificate__seal">
+                                    <img src="assets/certificate-seal.png" alt="Official Seal" class="seal__image">
+                                </div>
+                                
+                                <div class="signature">
+                                    <img src="assets/signature-expert.png" alt="Expert Signature" class="signature__image">
+                                    <div class="signature__line"></div>
+                                    <p class="signature__title" data-i18n="certificate.expert">Safety Expert</p>
+                                    <p class="signature__name">Prof. Michael Chen</p>
+                                </div>
+                            </div>
+                            
+                            <div class="certificate__verification">
+                                <p class="verification__text" data-i18n="certificate.verification">
+                                    Verify this certificate at: suraksha-learn.org/verify
+                                </p>
+                                <p class="verification__id">Certificate ID: <span id="certificateId">SL-2025-001234</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quiz Timer -->
+        <div class="quiz-timer" id="quizTimer" hidden>
+            <div class="timer-circle">
+                <svg viewBox="0 0 36 36" class="circular-timer">
+                    <path class="timer-bg"
+                        d="M18 2.0845
+                        a 15.9155 15.9155 0 0 1 0 31.831
+                        a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                    <path class="timer-progress" id="timerProgress"
+                        stroke-dasharray="100, 100"
+                        d="M18 2.0845
+                        a 15.9155 15.9155 0 0 1 0 31.831
+                        a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                    <text x="18" y="20.35" class="timer-text" id="timerText">5:00</text>
+                </svg>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__brand">
+                    <img src="assets/logo.svg" alt="Suraksha Learn" class="footer__logo">
+                    <p class="footer__tagline" data-i18n="footer.tagline">
+                        Empowering communities through disaster preparedness education
+                    </p>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p class="footer__copyright" data-i18n="footer.copyright">
+                    © 2025 Suraksha Learn. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="js/main.js"></script>
+    <script src="js/quiz.js"></script>
+</body>
+</html>

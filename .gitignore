@@ -1,0 +1,62 @@
+# Suraksha Learn - Git Ignore File
+
+# System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE/Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Node modules (if any future build tools are added)
+node_modules/
+
+# Temporary files
+.tmp/
+temp/
+
+# Media assets that should be replaced with actual content
+# (Uncomment these lines if you want to exclude placeholder assets)
+# assets/videos/*.mp4
+# assets/images/*.jpg
+# assets/images/*.png
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Build outputs (if any future build tools are added)
+dist/
+build/
+
+# Backup files
+*.bak
+*.backup

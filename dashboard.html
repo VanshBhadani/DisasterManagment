@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="dashboard.title">Dashboard - Suraksha Learn</title>
+    <meta name="description" content="Admin dashboard showing training progress and analytics">
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    
+    <!-- Chart.js for analytics -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+    <a href="#main" class="skip-link" data-i18n="nav.skip">Skip to main content</a>
+    
+    <!-- Navigation -->
+    <nav class="nav" role="navigation">
+        <div class="nav__container">
+            <div class="nav__brand">
+                <img src="assets/logo.svg" alt="Suraksha Learn" class="nav__logo">
+                <span class="nav__title" data-i18n="site.name">Suraksha Learn</span>
+            </div>
+            
+            <div class="nav__menu">
+                <a href="index.html" class="nav__link" data-i18n="nav.home">Home</a>
+                <a href="lesson.html" class="nav__link" data-i18n="nav.lessons">Lessons</a>
+                <a href="simulate.html" class="nav__link" data-i18n="nav.simulate">Simulate</a>
+                <a href="quiz.html" class="nav__link" data-i18n="nav.quiz">Quiz</a>
+                <a href="dashboard.html" class="nav__link nav__link--active" data-i18n="nav.dashboard">Dashboard</a>
+            </div>
+            
+            <div class="nav__actions">
+                <button class="lang-toggle" aria-label="Language toggle">
+                    <span class="lang-toggle__text">EN</span>
+                    <span class="lang-toggle__icon">🌐</span>
+                </button>
+                
+                <button class="nav__mobile-toggle" aria-label="Toggle navigation menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <main id="main" class="main">
+        <!-- Dashboard Header -->
+        <section class="dashboard-header">
+            <div class="container">
+                <div class="dashboard-title">
+                    <h1 data-i18n="dashboard.title">Training Dashboard</h1>
+                    <p class="dashboard-subtitle" data-i18n="dashboard.subtitle">
+                        Monitor progress and analyze disaster preparedness training effectiveness
+                    </p>
+                </div>
+                
+                <div class="dashboard-controls">
+                    <div class="date-range-picker">
+                        <label for="dateRange" data-i18n="dashboard.date.range">Date Range:</label>
+                        <select id="dateRange">
+                            <option value="7" data-i18n="dashboard.date.7days">Last 7 Days</option>
+                            <option value="30" selected data-i18n="dashboard.date.30days">Last 30 Days</option>
+                            <option value="90" data-i18n="dashboard.date.90days">Last 90 Days</option>
+                            <option value="365" data-i18n="dashboard.date.year">Last Year</option>
+                        </select>
+                    </div>
+                    
+                    <div class="dashboard-actions">
+                        <button class="btn btn--outline" id="exportData" data-i18n="dashboard.export">
+                            <img src="assets/icon-download.svg" alt="">
+                            Export CSV
+                        </button>
+                        <button class="btn btn--secondary" id="resetDemo" data-i18n="dashboard.reset">
+                            Reset Demo Data
+                        </button>
+                        <button class="btn btn--primary" id="refreshData" data-i18n="dashboard.refresh">
+                            <img src="assets/icon-refresh.svg" alt="">
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Key Metrics -->
+        <section class="dashboard-metrics">
+            <div class="container">
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <img src="assets/icon-students.svg" alt="">
+                        </div>
+                        <div class="metric-content">
+                            <h3 class="metric-title" data-i18n="dashboard.metrics.students">Total Students</h3>
+                            <p class="metric-value" id="totalStudents">2,847</p>
+                            <p class="metric-change positive" id="studentsChange">+12% from last month</p>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <img src="assets/icon-completion.svg" alt="">
+                        </div>
+                        <div class="metric-content">
+                            <h3 class="metric-title" data-i18n="dashboard.metrics.completion">Completion Rate</h3>
+                            <p class="metric-value" id="completionRate">89.3%</p>
+                            <p class="metric-change positive" id="completionChange">+5.2% from last month</p>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <img src="assets/icon-score.svg" alt="">
+                        </div>
+                        <div class="metric-content">
+                            <h3 class="metric-title" data-i18n="dashboard.metrics.average">Average Score</h3>
+                            <p class="metric-value" id="averageScore">82.7%</p>
+                            <p class="metric-change positive" id="scoreChange">+2.1% from last month</p>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <img src="assets/icon-certificate.svg" alt="">
+                        </div>
+                        <div class="metric-content">
+                            <h3 class="metric-title" data-i18n="dashboard.metrics.certificates">Certificates Issued</h3>
+                            <p class="metric-value" id="certificatesIssued">2,543</p>
+                            <p class="metric-change positive" id="certificatesChange">+156 this month</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Analytics Charts -->
+        <section class="dashboard-analytics">
+            <div class="container">
+                <div class="analytics-grid">
+                    <!-- Completion Trend Chart -->
+                    <div class="analytics-card">
+                        <div class="analytics-header">
+                            <h3 data-i18n="dashboard.analytics.completion.trend">Completion Trend</h3>
+                            <div class="chart-controls">
+                                <button class="chart-control active" data-period="week" data-i18n="dashboard.chart.week">Week</button>
+                                <button class="chart-control" data-period="month" data-i18n="dashboard.chart.month">Month</button>
+                                <button class="chart-control" data-period="year" data-i18n="dashboard.chart.year">Year</button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="completionChart" aria-label="Completion trend over time"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Module Performance Chart -->
+                    <div class="analytics-card">
+                        <div class="analytics-header">
+                            <h3 data-i18n="dashboard.analytics.module.performance">Module Performance</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="moduleChart" aria-label="Performance by training module"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Score Distribution Chart -->
+                    <div class="analytics-card">
+                        <div class="analytics-header">
+                            <h3 data-i18n="dashboard.analytics.score.distribution">Score Distribution</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="scoreChart" aria-label="Distribution of quiz scores"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Preparedness Score Chart -->
+                    <div class="analytics-card">
+                        <div class="analytics-header">
+                            <h3 data-i18n="dashboard.analytics.preparedness">Preparedness Score Evolution</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="preparednessChart" aria-label="Preparedness score over time"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Student Data Table -->
+        <section class="dashboard-table">
+            <div class="container">
+                <div class="table-header">
+                    <h3 data-i18n="dashboard.table.title">Recent Completions</h3>
+                    <div class="table-controls">
+                        <div class="search-box">
+                            <input type="search" id="studentSearch" placeholder="Search students..." data-i18n-placeholder="dashboard.search.placeholder">
+                            <img src="assets/icon-search.svg" alt="" class="search-icon">
+                        </div>
+                        <select id="moduleFilter">
+                            <option value="all" data-i18n="dashboard.filter.all">All Modules</option>
+                            <option value="earthquake" data-i18n="modules.earthquake.title">Earthquake Safety</option>
+                            <option value="fire" data-i18n="modules.fire.title">Fire Safety</option>
+                            <option value="flood" data-i18n="modules.flood.title">Flood Preparedness</option>
+                        </select>
+                        <select id="statusFilter">
+                            <option value="all" data-i18n="dashboard.filter.status.all">All Status</option>
+                            <option value="completed" data-i18n="dashboard.filter.status.completed">Completed</option>
+                            <option value="in-progress" data-i18n="dashboard.filter.status.progress">In Progress</option>
+                            <option value="failed" data-i18n="dashboard.filter.status.failed">Failed</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table" id="studentsTable">
+                        <thead>
+                            <tr>
+                                <th data-i18n="dashboard.table.name">Student Name</th>
+                                <th data-i18n="dashboard.table.module">Module</th>
+                                <th data-i18n="dashboard.table.score">Score</th>
+                                <th data-i18n="dashboard.table.date">Completion Date</th>
+                                <th data-i18n="dashboard.table.status">Status</th>
+                                <th data-i18n="dashboard.table.certificate">Certificate</th>
+                                <th data-i18n="dashboard.table.actions">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTableBody">
+                            <!-- Table rows will be populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="table-pagination">
+                    <div class="pagination-info">
+                        <span data-i18n="dashboard.pagination.showing">Showing</span>
+                        <span id="paginationStart">1</span>-<span id="paginationEnd">10</span>
+                        <span data-i18n="dashboard.pagination.of">of</span>
+                        <span id="paginationTotal">125</span>
+                        <span data-i18n="dashboard.pagination.results">results</span>
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="pagination-btn" id="prevPage" disabled>
+                            <img src="assets/icon-prev.svg" alt="">
+                        </button>
+                        <div class="pagination-pages" id="paginationPages">
+                            <!-- Page numbers will be generated dynamically -->
+                        </div>
+                        <button class="pagination-btn" id="nextPage">
+                            <img src="assets/icon-next.svg" alt="">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Module Details Modal -->
+        <div class="modal" id="studentModal" hidden>
+            <div class="modal-overlay" id="modalOverlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 data-i18n="dashboard.modal.title">Student Details</h3>
+                    <button class="modal-close" id="modalClose" aria-label="Close modal">×</button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Student details will be populated here -->
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn--secondary" id="modalCancel" data-i18n="dashboard.modal.close">Close</button>
+                    <button class="btn btn--primary" id="sendCertificate" data-i18n="dashboard.modal.send">Send Certificate</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__brand">
+                    <img src="assets/logo.svg" alt="Suraksha Learn" class="footer__logo">
+                    <p class="footer__tagline" data-i18n="footer.tagline">
+                        Empowering communities through disaster preparedness education
+                    </p>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p class="footer__copyright" data-i18n="footer.copyright">
+                    © 2025 Suraksha Learn. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="js/main.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

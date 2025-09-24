@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="lesson.title">Lesson - Suraksha Learn</title>
+    <meta name="description" content="Interactive disaster preparedness lesson with video content and downloadable materials">
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+    <a href="#main" class="skip-link" data-i18n="nav.skip">Skip to main content</a>
+    
+    <!-- Navigation -->
+    <nav class="nav" role="navigation">
+        <div class="nav__container">
+            <div class="nav__brand">
+                <img src="assets/logo.svg" alt="Suraksha Learn" class="nav__logo">
+                <span class="nav__title" data-i18n="site.name">Suraksha Learn</span>
+            </div>
+            
+            <div class="nav__menu">
+                <a href="index.html" class="nav__link" data-i18n="nav.home">Home</a>
+                <a href="lesson.html" class="nav__link nav__link--active" data-i18n="nav.lessons">Lessons</a>
+                <a href="simulate.html" class="nav__link" data-i18n="nav.simulate">Simulate</a>
+                <a href="quiz.html" class="nav__link" data-i18n="nav.quiz">Quiz</a>
+                <a href="dashboard.html" class="nav__link" data-i18n="nav.dashboard">Dashboard</a>
+            </div>
+            
+            <div class="nav__actions">
+                <button class="lang-toggle" aria-label="Language toggle">
+                    <span class="lang-toggle__text">EN</span>
+                    <span class="lang-toggle__icon">🌐</span>
+                </button>
+                
+                <button class="nav__mobile-toggle" aria-label="Toggle navigation menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <main id="main" class="main">
+        <!-- Lesson Header -->
+        <section class="lesson-header">
+            <div class="container">
+                <div class="lesson-header__breadcrumb">
+                    <a href="index.html" data-i18n="nav.home">Home</a>
+                    <span>/</span>
+                    <span data-i18n="nav.lessons">Lessons</span>
+                    <span>/</span>
+                    <span class="lesson-header__current" id="currentModule">Earthquake Safety</span>
+                </div>
+                
+                <h1 class="lesson-header__title" id="lessonTitle" data-i18n="lesson.earthquake.title">
+                    Earthquake Safety: Drop, Cover, and Hold
+                </h1>
+                
+                <div class="lesson-header__meta">
+                    <span class="lesson-meta__item">
+                        <img src="assets/icon-clock.svg" alt="">
+                        <span id="lessonDuration">15 minutes</span>
+                    </span>
+                    <span class="lesson-meta__item">
+                        <img src="assets/icon-level.svg" alt="">
+                        <span id="lessonLevel" data-i18n="lesson.level.beginner">Beginner</span>
+                    </span>
+                    <span class="lesson-meta__item">
+                        <img src="assets/icon-students.svg" alt="">
+                        <span>2,847 students</span>
+                    </span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Video Section -->
+        <section class="lesson-video">
+            <div class="container">
+                <div class="video-player">
+                    <video 
+                        id="lessonVideo"
+                        controls
+                        poster="assets/lesson-earthquake-poster.jpg"
+                        preload="metadata"
+                        aria-describedby="videoDescription"
+                    >
+                        <source src="assets/lesson-earthquake.mp4" type="video/mp4">
+                        <source src="assets/lesson-earthquake.webm" type="video/webm">
+                        <p data-i18n="lesson.video.unsupported">
+                            Your browser doesn't support video playback. 
+                            <a href="assets/lesson-earthquake.mp4" download>Download the video</a>
+                        </p>
+                    </video>
+                    
+                    <div class="video-controls">
+                        <button class="video-control" id="playPauseBtn" aria-label="Play/Pause">
+                            <img src="assets/icon-play.svg" alt="">
+                        </button>
+                        <div class="video-progress">
+                            <div class="video-progress__bar" id="progressBar"></div>
+                            <input type="range" id="progressSlider" min="0" max="100" value="0" aria-label="Video progress">
+                        </div>
+                        <div class="video-time">
+                            <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+                        </div>
+                        <button class="video-control" id="fullscreenBtn" aria-label="Fullscreen">
+                            <img src="assets/icon-fullscreen.svg" alt="">
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Download Options -->
+                <div class="lesson-downloads">
+                    <h3 class="downloads__title" data-i18n="lesson.downloads.title">Download for Offline Use</h3>
+                    <div class="downloads__options">
+                        <a href="assets/lesson-earthquake.mp4" download class="download-btn">
+                            <img src="assets/icon-video.svg" alt="">
+                            <span data-i18n="lesson.downloads.video">Video (MP4)</span>
+                            <small>25 MB</small>
+                        </a>
+                        <a href="assets/lesson-earthquake-transcript.pdf" download class="download-btn">
+                            <img src="assets/icon-pdf.svg" alt="">
+                            <span data-i18n="lesson.downloads.transcript">Transcript (PDF)</span>
+                            <small>2 MB</small>
+                        </a>
+                        <button class="download-btn" id="downloadAll">
+                            <img src="assets/icon-download.svg" alt="">
+                            <span data-i18n="lesson.downloads.all">Download All</span>
+                            <small>27 MB</small>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Lesson Content -->
+        <section class="lesson-content">
+            <div class="container">
+                <div class="lesson-layout">
+                    <!-- Main Content -->
+                    <div class="lesson-main">
+                        <div class="lesson-steps" id="lessonSteps">
+                            <!-- Steps will be dynamically loaded based on module -->
+                        </div>
+                        
+                        <!-- Interactive Activities -->
+                        <div class="lesson-activities">
+                            <h3 class="activities__title" data-i18n="lesson.activities.title">Interactive Practice</h3>
+                            
+                            <div class="activity" id="dropCoverHoldActivity">
+                                <h4 class="activity__title" data-i18n="lesson.earthquake.activity.title">
+                                    Practice: Drop, Cover, and Hold
+                                </h4>
+                                <p class="activity__instruction" data-i18n="lesson.earthquake.activity.instruction">
+                                    Drag each action to the correct position in the sequence:
+                                </p>
+                                
+                                <div class="drag-drop-area">
+                                    <div class="drop-zones">
+                                        <div class="drop-zone" data-correct="drop">
+                                            <span class="step-number">1</span>
+                                            <span class="step-label" data-i18n="lesson.earthquake.step1.short">Drop</span>
+                                        </div>
+                                        <div class="drop-zone" data-correct="cover">
+                                            <span class="step-number">2</span>
+                                            <span class="step-label" data-i18n="lesson.earthquake.step2.short">Cover</span>
+                                        </div>
+                                        <div class="drop-zone" data-correct="hold">
+                                            <span class="step-number">3</span>
+                                            <span class="step-label" data-i18n="lesson.earthquake.step3.short">Hold</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="draggable-items">
+                                        <div class="draggable-item" data-action="cover" draggable="true">
+                                            <img src="assets/action-cover.svg" alt="">
+                                            <span data-i18n="lesson.earthquake.action.cover">Take cover under desk</span>
+                                        </div>
+                                        <div class="draggable-item" data-action="drop" draggable="true">
+                                            <img src="assets/action-drop.svg" alt="">
+                                            <span data-i18n="lesson.earthquake.action.drop">Drop to hands and knees</span>
+                                        </div>
+                                        <div class="draggable-item" data-action="hold" draggable="true">
+                                            <img src="assets/action-hold.svg" alt="">
+                                            <span data-i18n="lesson.earthquake.action.hold">Hold on and protect head</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="activity__feedback" id="activityFeedback"></div>
+                                <button class="btn btn--primary" id="checkActivity" data-i18n="lesson.activities.check">
+                                    Check Answer
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Progress Actions -->
+                        <div class="lesson-actions">
+                            <button class="btn btn--secondary" id="previousLesson" data-i18n="lesson.nav.previous">
+                                Previous Lesson
+                            </button>
+                            <button class="btn btn--primary" id="nextAction" data-i18n="lesson.nav.simulation">
+                                Start Simulation
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Sidebar -->
+                    <div class="lesson-sidebar">
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title" data-i18n="lesson.sidebar.progress">Your Progress</h3>
+                            <div class="progress-circle">
+                                <svg viewBox="0 0 36 36" class="circular-chart">
+                                    <path class="circle-bg"
+                                        d="M18 2.0845
+                                        a 15.9155 15.9155 0 0 1 0 31.831
+                                        a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    />
+                                    <path class="circle-progress" id="progressCircle"
+                                        stroke-dasharray="33, 100"
+                                        d="M18 2.0845
+                                        a 15.9155 15.9155 0 0 1 0 31.831
+                                        a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    />
+                                    <text x="18" y="20.35" class="percentage" id="progressText">33%</text>
+                                </svg>
+                            </div>
+                            <p class="progress-description" data-i18n="lesson.progress.description">
+                                You're making great progress! Complete the simulation to unlock the quiz.
+                            </p>
+                        </div>
+                        
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title" data-i18n="lesson.sidebar.resources">Quick Resources</h3>
+                            <ul class="resource-list">
+                                <li>
+                                    <a href="assets/earthquake-checklist.pdf" target="_blank">
+                                        <img src="assets/icon-checklist.svg" alt="">
+                                        <span data-i18n="lesson.resources.checklist">Emergency Checklist</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="assets/earthquake-kit.pdf" target="_blank">
+                                        <img src="assets/icon-kit.svg" alt="">
+                                        <span data-i18n="lesson.resources.kit">Emergency Kit Guide</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="tel:911" class="emergency-link">
+                                        <img src="assets/icon-phone.svg" alt="">
+                                        <span data-i18n="lesson.resources.emergency">Emergency: 911</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title" data-i18n="lesson.sidebar.next">What's Next?</h3>
+                            <div class="next-steps">
+                                <div class="next-step">
+                                    <div class="step-icon">
+                                        <img src="assets/icon-simulation.svg" alt="">
+                                    </div>
+                                    <div class="step-content">
+                                        <h4 data-i18n="lesson.next.simulation">Practice Simulation</h4>
+                                        <p data-i18n="lesson.next.simulation.desc">Test your knowledge in realistic scenarios</p>
+                                    </div>
+                                </div>
+                                <div class="next-step">
+                                    <div class="step-icon">
+                                        <img src="assets/icon-quiz.svg" alt="">
+                                    </div>
+                                    <div class="step-content">
+                                        <h4 data-i18n="lesson.next.quiz">Take the Quiz</h4>
+                                        <p data-i18n="lesson.next.quiz.desc">Earn your completion certificate</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__brand">
+                    <img src="assets/logo.svg" alt="Suraksha Learn" class="footer__logo">
+                    <p class="footer__tagline" data-i18n="footer.tagline">
+                        Empowering communities through disaster preparedness education
+                    </p>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p class="footer__copyright" data-i18n="footer.copyright">
+                    © 2025 Suraksha Learn. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="js/main.js"></script>
+    <script src="js/lesson.js"></script>
+</body>
+</html>

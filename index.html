@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="site.title">Suraksha Learn - Disaster Preparedness for Schools</title>
+    <meta name="description" content="Interactive disaster preparedness learning platform for schools and colleges">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="css/styles.css" as="style">
+    <link rel="preload" href="assets/lesson-preview.mp4" as="video" type="video/mp4">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main" class="skip-link" data-i18n="nav.skip">Skip to main content</a>
+    
+    <!-- Navigation -->
+    <nav class="nav" role="navigation" aria-label="Main navigation">
+        <div class="nav__container">
+            <div class="nav__brand">
+                <img src="assets/logo.svg" alt="Suraksha Learn" class="nav__logo">
+                <span class="nav__title" data-i18n="site.name">Suraksha Learn</span>
+            </div>
+            
+            <div class="nav__menu">
+                <a href="index.html" class="nav__link nav__link--active" data-i18n="nav.home">Home</a>
+                <a href="lesson.html" class="nav__link" data-i18n="nav.lessons">Lessons</a>
+                <a href="simulate.html" class="nav__link" data-i18n="nav.simulate">Simulate</a>
+                <a href="quiz.html" class="nav__link" data-i18n="nav.quiz">Quiz</a>
+                <a href="dashboard.html" class="nav__link" data-i18n="nav.dashboard">Dashboard</a>
+            </div>
+            
+            <div class="nav__actions">
+                <button class="lang-toggle" aria-label="Language toggle">
+                    <span class="lang-toggle__text">EN</span>
+                    <span class="lang-toggle__icon">🌐</span>
+                </button>
+                
+                <button class="nav__mobile-toggle" aria-label="Toggle navigation menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main id="main" class="main">
+        <!-- Hero Section with 3D Scene -->
+        <section class="hero" id="hero">
+            <!-- 3D Canvas -->
+            <canvas class="hero__canvas" id="heroCanvas" aria-hidden="true"></canvas>
+            
+            <!-- Fallback for devices without WebGL -->
+            <div class="hero__fallback" id="heroFallback" hidden>
+                <img src="assets/hero-fallback.jpg" alt="Classroom disaster preparedness scene" class="hero__fallback-image">
+            </div>
+            
+            <!-- Hero Content -->
+            <div class="hero__content">
+                <div class="hero__text">
+                    <h1 class="hero__title" data-i18n="hero.title">
+                        Be Prepared.<br>
+                        <span class="hero__title--accent">Stay Safe.</span>
+                    </h1>
+                    <p class="hero__subtitle" data-i18n="hero.subtitle">
+                        Interactive disaster preparedness training for schools and colleges. 
+                        Learn life-saving skills through immersive simulations and expert guidance.
+                    </p>
+                    
+                    <div class="hero__actions">
+                        <a href="lesson.html" class="btn btn--primary btn--large" data-i18n="hero.cta">
+                            Start Learning
+                        </a>
+                        <button class="btn btn--secondary btn--large" id="watchDemo" data-i18n="hero.demo">
+                            Watch Demo
+                        </button>
+                    </div>
+                    
+                    <div class="hero__stats">
+                        <div class="stat">
+                            <span class="stat__number">10K+</span>
+                            <span class="stat__label" data-i18n="hero.stat1">Students Trained</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat__number">500+</span>
+                            <span class="stat__label" data-i18n="hero.stat2">Schools</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat__number">95%</span>
+                            <span class="stat__label" data-i18n="hero.stat3">Pass Rate</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scroll indicator -->
+            <div class="hero__scroll" aria-label="Scroll down">
+                <div class="hero__scroll-text" data-i18n="hero.scroll">Scroll to explore</div>
+                <div class="hero__scroll-icon"></div>
+            </div>
+        </section>
+        
+        <!-- Features Section -->
+        <section class="features" id="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title" data-i18n="features.title">Why Choose Suraksha Learn?</h2>
+                    <p class="section-subtitle" data-i18n="features.subtitle">
+                        Our platform combines cutting-edge technology with proven safety protocols
+                    </p>
+                </div>
+                
+                <div class="features__grid">
+                    <div class="feature-card">
+                        <div class="feature-card__icon">
+                            <img src="assets/icon-interactive.svg" alt="">
+                        </div>
+                        <h3 class="feature-card__title" data-i18n="features.interactive.title">Interactive Simulations</h3>
+                        <p class="feature-card__text" data-i18n="features.interactive.text">
+                            Practice real-world scenarios in a safe, controlled environment with immediate feedback.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-card__icon">
+                            <img src="assets/icon-expert.svg" alt="">
+                        </div>
+                        <h3 class="feature-card__title" data-i18n="features.expert.title">Expert Content</h3>
+                        <p class="feature-card__text" data-i18n="features.expert.text">
+                            Content developed by disaster management experts and educational specialists.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-card__icon">
+                            <img src="assets/icon-certificate.svg" alt="">
+                        </div>
+                        <h3 class="feature-card__title" data-i18n="features.certificate.title">Certification</h3>
+                        <p class="feature-card__text" data-i18n="features.certificate.text">
+                            Earn recognized certificates upon successful completion of training modules.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-card__icon">
+                            <img src="assets/icon-offline.svg" alt="">
+                        </div>
+                        <h3 class="feature-card__title" data-i18n="features.offline.title">Offline Access</h3>
+                        <p class="feature-card__text" data-i18n="features.offline.text">
+                            Download lessons and materials for offline learning and reference.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Modules Section -->
+        <section class="modules" id="modules">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title" data-i18n="modules.title">Training Modules</h2>
+                    <p class="section-subtitle" data-i18n="modules.subtitle">
+                        Comprehensive preparedness training for all major disasters
+                    </p>
+                </div>
+                
+                <div class="modules__grid">
+                    <div class="module-card" data-module="earthquake">
+                        <div class="module-card__image">
+                            <img src="assets/module-earthquake.jpg" alt="Earthquake preparedness" loading="lazy">
+                        </div>
+                        <div class="module-card__content">
+                            <h3 class="module-card__title" data-i18n="modules.earthquake.title">Earthquake Safety</h3>
+                            <p class="module-card__text" data-i18n="modules.earthquake.text">
+                                Learn Drop, Cover, and Hold techniques. Practice evacuation procedures.
+                            </p>
+                            <div class="module-card__meta">
+                                <span class="module-card__duration">15 min</span>
+                                <span class="module-card__level">Beginner</span>
+                            </div>
+                            <a href="lesson.html?module=earthquake" class="btn btn--primary btn--small">
+                                <span data-i18n="modules.start">Start Module</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="module-card" data-module="fire">
+                        <div class="module-card__image">
+                            <img src="assets/module-fire.jpg" alt="Fire safety" loading="lazy">
+                        </div>
+                        <div class="module-card__content">
+                            <h3 class="module-card__title" data-i18n="modules.fire.title">Fire Safety</h3>
+                            <p class="module-card__text" data-i18n="modules.fire.text">
+                                Fire prevention, evacuation routes, and proper use of safety equipment.
+                            </p>
+                            <div class="module-card__meta">
+                                <span class="module-card__duration">12 min</span>
+                                <span class="module-card__level">Beginner</span>
+                            </div>
+                            <a href="lesson.html?module=fire" class="btn btn--primary btn--small">
+                                <span data-i18n="modules.start">Start Module</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="module-card" data-module="flood">
+                        <div class="module-card__image">
+                            <img src="assets/module-flood.jpg" alt="Flood preparedness" loading="lazy">
+                        </div>
+                        <div class="module-card__content">
+                            <h3 class="module-card__title" data-i18n="modules.flood.title">Flood Preparedness</h3>
+                            <p class="module-card__text" data-i18n="modules.flood.text">
+                                Emergency kits, safe evacuation, and post-flood safety measures.
+                            </p>
+                            <div class="module-card__meta">
+                                <span class="module-card__duration">18 min</span>
+                                <span class="module-card__level">Intermediate</span>
+                            </div>
+                            <a href="lesson.html?module=flood" class="btn btn--primary btn--small">
+                                <span data-i18n="modules.start">Start Module</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CTA Section -->
+        <section class="cta">
+            <div class="container">
+                <div class="cta__content">
+                    <h2 class="cta__title" data-i18n="cta.title">Ready to Get Started?</h2>
+                    <p class="cta__text" data-i18n="cta.text">
+                        Join thousands of students already learning life-saving skills
+                    </p>
+                    <div class="cta__actions">
+                        <a href="lesson.html" class="btn btn--primary btn--large" data-i18n="cta.primary">
+                            Start Your First Lesson
+                        </a>
+                        <a href="dashboard.html" class="btn btn--secondary btn--large" data-i18n="cta.secondary">
+                            View Progress Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__brand">
+                    <img src="assets/logo.svg" alt="Suraksha Learn" class="footer__logo">
+                    <p class="footer__tagline" data-i18n="footer.tagline">
+                        Empowering communities through disaster preparedness education
+                    </p>
+                </div>
+                
+                <div class="footer__links">
+                    <div class="footer__section">
+                        <h4 class="footer__title" data-i18n="footer.platform">Platform</h4>
+                        <ul class="footer__list">
+                            <li><a href="lesson.html" data-i18n="nav.lessons">Lessons</a></li>
+                            <li><a href="simulate.html" data-i18n="nav.simulate">Simulations</a></li>
+                            <li><a href="quiz.html" data-i18n="nav.quiz">Quizzes</a></li>
+                            <li><a href="dashboard.html" data-i18n="nav.dashboard">Dashboard</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer__section">
+                        <h4 class="footer__title" data-i18n="footer.resources">Resources</h4>
+                        <ul class="footer__list">
+                            <li><a href="#" data-i18n="footer.guides">Safety Guides</a></li>
+                            <li><a href="#" data-i18n="footer.downloads">Downloads</a></li>
+                            <li><a href="#" data-i18n="footer.help">Help Center</a></li>
+                            <li><a href="#" data-i18n="footer.contact">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer__bottom">
+                <p class="footer__copyright" data-i18n="footer.copyright">
+                    © 2025 Suraksha Learn. All rights reserved.
+                </p>
+                <div class="footer__legal">
+                    <a href="#" data-i18n="footer.privacy">Privacy Policy</a>
+                    <a href="#" data-i18n="footer.terms">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/three-hero.js"></script>
+</body>
+</html>

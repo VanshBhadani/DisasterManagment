@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="simulation.title">Simulation - Suraksha Learn</title>
+    <meta name="description" content="Interactive disaster response simulation with branching scenarios">
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+    <a href="#main" class="skip-link" data-i18n="nav.skip">Skip to main content</a>
+    
+    <!-- Navigation -->
+    <nav class="nav" role="navigation">
+        <div class="nav__container">
+            <div class="nav__brand">
+                <img src="assets/logo.svg" alt="Suraksha Learn" class="nav__logo">
+                <span class="nav__title" data-i18n="site.name">Suraksha Learn</span>
+            </div>
+            
+            <div class="nav__menu">
+                <a href="index.html" class="nav__link" data-i18n="nav.home">Home</a>
+                <a href="lesson.html" class="nav__link" data-i18n="nav.lessons">Lessons</a>
+                <a href="simulate.html" class="nav__link nav__link--active" data-i18n="nav.simulate">Simulate</a>
+                <a href="quiz.html" class="nav__link" data-i18n="nav.quiz">Quiz</a>
+                <a href="dashboard.html" class="nav__link" data-i18n="nav.dashboard">Dashboard</a>
+            </div>
+            
+            <div class="nav__actions">
+                <button class="lang-toggle" aria-label="Language toggle">
+                    <span class="lang-toggle__text">EN</span>
+                    <span class="lang-toggle__icon">🌐</span>
+                </button>
+                
+                <button class="nav__mobile-toggle" aria-label="Toggle navigation menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <main id="main" class="main">
+        <!-- Simulation Header -->
+        <section class="simulation-header">
+            <div class="container">
+                <div class="simulation-header__breadcrumb">
+                    <a href="index.html" data-i18n="nav.home">Home</a>
+                    <span>/</span>
+                    <span data-i18n="nav.simulate">Simulation</span>
+                    <span>/</span>
+                    <span class="simulation-header__current" id="currentSimulation">Earthquake Response</span>
+                </div>
+                
+                <h1 class="simulation-header__title" id="simulationTitle" data-i18n="simulation.earthquake.title">
+                    Earthquake Response Simulation
+                </h1>
+                
+                <div class="simulation-progress">
+                    <div class="progress-bar">
+                        <div class="progress-bar__fill" id="simulationProgress" style="width: 0%"></div>
+                    </div>
+                    <span class="progress-text">
+                        <span data-i18n="simulation.step">Step</span> 
+                        <span id="currentStep">1</span> 
+                        <span data-i18n="simulation.of">of</span> 
+                        <span id="totalSteps">3</span>
+                    </span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Simulation Viewport -->
+        <section class="simulation-viewport">
+            <div class="viewport-container">
+                <!-- Scene Display -->
+                <div class="scene-display" id="sceneDisplay">
+                    <!-- Current scene image/video will be loaded here -->
+                    <img id="sceneImage" src="assets/scene-classroom.jpg" alt="Classroom scene" class="scene-image">
+                    
+                    <!-- Scene overlay for effects -->
+                    <div class="scene-overlay" id="sceneOverlay"></div>
+                    
+                    <!-- Scene description -->
+                    <div class="scene-description" id="sceneDescription">
+                        <p data-i18n="simulation.earthquake.intro">
+                            You are in a classroom when suddenly the ground begins to shake. 
+                            The earthquake has started. What do you do first?
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Controls Panel -->
+                <div class="simulation-controls">
+                    <div class="simulation-status">
+                        <div class="status-item">
+                            <span class="status-label" data-i18n="simulation.status.safety">Safety Score:</span>
+                            <span class="status-value" id="safetyScore">100%</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label" data-i18n="simulation.status.time">Time Elapsed:</span>
+                            <span class="status-value" id="timeElapsed">0:00</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Choices -->
+                    <div class="action-choices" id="actionChoices">
+                        <!-- Choices will be dynamically populated -->
+                    </div>
+                    
+                    <!-- Action Feedback -->
+                    <div class="action-feedback" id="actionFeedback" hidden>
+                        <div class="feedback-content">
+                            <div class="feedback-icon" id="feedbackIcon"></div>
+                            <div class="feedback-text" id="feedbackText"></div>
+                        </div>
+                        <button class="btn btn--primary" id="continueBtn" data-i18n="simulation.continue">
+                            Continue
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Simulation Summary -->
+        <section class="simulation-summary" id="simulationSummary" hidden>
+            <div class="container">
+                <div class="summary-content">
+                    <div class="summary-header">
+                        <h2 class="summary-title" data-i18n="simulation.complete.title">Simulation Complete!</h2>
+                        <div class="summary-score">
+                            <div class="score-circle">
+                                <svg viewBox="0 0 36 36" class="circular-chart">
+                                    <path class="circle-bg"
+                                        d="M18 2.0845
+                                        a 15.9155 15.9155 0 0 1 0 31.831
+                                        a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    />
+                                    <path class="circle-progress" id="finalScoreCircle"
+                                        stroke-dasharray="85, 100"
+                                        d="M18 2.0845
+                                        a 15.9155 15.9155 0 0 1 0 31.831
+                                        a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    />
+                                    <text x="18" y="20.35" class="percentage" id="finalScoreText">85%</text>
+                                </svg>
+                            </div>
+                            <p class="score-label" data-i18n="simulation.final.score">Final Safety Score</p>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-details">
+                        <div class="summary-section">
+                            <h3 data-i18n="simulation.summary.decisions">Your Decisions</h3>
+                            <div class="decision-timeline" id="decisionTimeline">
+                                <!-- Decision history will be populated here -->
+                            </div>
+                        </div>
+                        
+                        <div class="summary-section">
+                            <h3 data-i18n="simulation.summary.feedback">Key Learnings</h3>
+                            <div class="learning-points" id="learningPoints">
+                                <!-- Learning points will be populated here -->
+                            </div>
+                        </div>
+                        
+                        <div class="summary-section">
+                            <h3 data-i18n="simulation.summary.improvements">Areas for Improvement</h3>
+                            <div class="improvement-tips" id="improvementTips">
+                                <!-- Improvement tips will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-actions">
+                        <button class="btn btn--secondary" id="restartSimulation" data-i18n="simulation.restart">
+                            Try Again
+                        </button>
+                        <a href="quiz.html" class="btn btn--primary" data-i18n="simulation.quiz">
+                            Take Quiz
+                        </a>
+                        <button class="btn btn--outline" id="shareResults" data-i18n="simulation.share">
+                            Share Results
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Pause/Help Overlay -->
+        <div class="simulation-overlay" id="simulationOverlay" hidden>
+            <div class="overlay-content">
+                <div class="overlay-header">
+                    <h3 id="overlayTitle">Simulation Paused</h3>
+                    <button class="overlay-close" id="overlayClose" aria-label="Close overlay">×</button>
+                </div>
+                <div class="overlay-body" id="overlayBody">
+                    <!-- Content will be populated based on overlay type -->
+                </div>
+                <div class="overlay-actions">
+                    <button class="btn btn--secondary" id="overlayCancel">Cancel</button>
+                    <button class="btn btn--primary" id="overlayConfirm">Confirm</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Simulation Controls (Fixed) -->
+        <div class="simulation-toolbar">
+            <button class="toolbar-btn" id="pauseBtn" aria-label="Pause simulation">
+                <img src="assets/icon-pause.svg" alt="">
+            </button>
+            <button class="toolbar-btn" id="helpBtn" aria-label="Help">
+                <img src="assets/icon-help.svg" alt="">
+            </button>
+            <button class="toolbar-btn" id="resetBtn" aria-label="Reset simulation">
+                <img src="assets/icon-reset.svg" alt="">
+            </button>
+            <button class="toolbar-btn" id="exitBtn" aria-label="Exit simulation">
+                <img src="assets/icon-exit.svg" alt="">
+            </button>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__brand">
+                    <img src="assets/logo.svg" alt="Suraksha Learn" class="footer__logo">
+                    <p class="footer__tagline" data-i18n="footer.tagline">
+                        Empowering communities through disaster preparedness education
+                    </p>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p class="footer__copyright" data-i18n="footer.copyright">
+                    © 2025 Suraksha Learn. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="js/main.js"></script>
+    <script src="js/simulation.js"></script>
+</body>
+</html>
